@@ -1,0 +1,26 @@
+{
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["node", "vue"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
+}
