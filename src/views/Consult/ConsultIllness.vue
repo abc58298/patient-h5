@@ -1,9 +1,13 @@
 <script setup lang="ts" name="ConsultIllness">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { ConsultIllness } from '@/types/consult'
 import { ConsultTime } from '@/enums'
 import { uploadImage } from '@/services/consult'
-import { UploaderAfterRead, UploaderFileListItem } from 'vant'
+import { showToast, UploaderAfterRead, UploaderFileListItem } from 'vant'
+import { useConsultStore } from '@/stores'
+import { useRoute } from 'vue-router'
+const store = useConsultStore()
+const router = useRoute()
 const form = ref<ConsultIllness>({
   illnessDesc: '',
   illnessTime: undefined,
@@ -43,9 +47,19 @@ const onAfterRead: UploaderAfterRead = (item) => {
       item.message = '上传失败'
     })
 }
+//删除图片
 const onDelete = (item: UploaderFileListItem) => {
-  console.log('删除图片')
   form.value.pictures = form.value.pictures?.filter((pic) => pic.url != item.url)
+}
+//通过计算属性判断是否激活按钮
+const disabled = computed(
+  () => !form.value.illnessDesc || form.value.illnessTime === undefined || form.value.consultFlag === undefined,
+)
+const next = () => {
+  if (!form.value.illnessDesc) return showToast('请输入病情描述')
+  if (form.value.illnessTime === undefined) return showToast('请选择患病时间')
+  if (form.value.consultFlag === undefined) return showToast('请选择是否就医过')
+  store.setillness(form.value)
 }
 </script>
 
@@ -63,7 +77,12 @@ const onDelete = (item: UploaderFileListItem) => {
     </div>
     <!-- 表单 -->
     <div class="illness-form">
-      <van-field type="textarea" rows="3" placeholder="请详细描述您的病情，病情描述不能为空"></van-field>
+      <van-field
+        type="textarea"
+        rows="3"
+        placeholder="请详细描述您的病情，病情描述不能为空"
+        v-model="form.illnessDesc"
+      ></van-field>
       <div class="item">
         <p>本次患病多久了？</p>
         <RadioButton :options="timeOptions" v-model="form.illnessTime" />
@@ -84,7 +103,7 @@ const onDelete = (item: UploaderFileListItem) => {
         ></van-uploader>
         <p class="tip" v-if="!fileList.length">上传内容仅医生可见,最多9张图,最大5MB</p>
       </div>
-      <van-button type="primary" block round>下一步</van-button>
+      <van-button @click="next" type="primary" block round :class="{ disabled }">下一步</van-button>
     </div>
   </div>
 </template>
