@@ -5,9 +5,9 @@ import { ConsultTime } from '@/enums'
 import { uploadImage } from '@/services/consult'
 import { showToast, UploaderAfterRead, UploaderFileListItem } from 'vant'
 import { useConsultStore } from '@/stores'
-import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 const store = useConsultStore()
-const router = useRoute()
+const router = useRouter()
 const form = ref<ConsultIllness>({
   illnessDesc: '',
   illnessTime: undefined,
@@ -56,10 +56,18 @@ const disabled = computed(
   () => !form.value.illnessDesc || form.value.illnessTime === undefined || form.value.consultFlag === undefined,
 )
 const next = () => {
-  if (!form.value.illnessDesc) return showToast('请输入病情描述')
-  if (form.value.illnessTime === undefined) return showToast('请选择患病时间')
-  if (form.value.consultFlag === undefined) return showToast('请选择是否就医过')
+  if (!form.value.illnessDesc || form.value.illnessDesc.trim() === '') {
+    return showToast('请输入病情描述')
+  }
+  if (form.value.illnessTime === undefined || form.value.illnessTime === null) {
+    return showToast('请选择患病时间')
+  }
+  if (form.value.consultFlag === undefined || form.value.consultFlag === null) {
+    return showToast('请选择是否就医过')
+  }
+  const store = useConsultStore()
   store.setillness(form.value)
+  router.push('/user/patient?isChange=1')
 }
 </script>
 
