@@ -12,7 +12,7 @@ export enum ConsultType {
 //问诊时间
 export enum ConsultTime {
   Week=1,
-  Mouth=2,
+  Month=2,
   HalfYear=3,
   More=4
 }

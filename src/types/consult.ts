@@ -117,22 +117,22 @@ export type Consult = {
   couponId: string
 }
 
-// /**
-// export type Illness = {
-//   // 疾病描述
-//   illnessDesc: string
-//   // 疾病持续时间
-//   illnessTime: IllnessTime
-//   // 是否就诊过，0 未就诊过  1 就诊过
-//   consultFlag: 0 | 1
-//   // 图片数组
-//   pictures: Image[]
-// }
-//  */
-// export type Illness = Pick<
-//   Consult,
-//   'illnessDesc' | 'illnessTime' | 'consultFlag' | 'pictures'
-// >
+
+export type Illness = {
+  // 疾病描述
+  illnessDesc: string
+  // 疾病持续时间
+  illnessTime: ConsultTime
+  // 是否就诊过，0 未就诊过  1 就诊过
+  consultFlag: 0 | 1
+  // 图片数组
+  pictures: Image[]
+}
+//病情描述对象
+export type ConsultIllness = Pick<
+PartialConsult,
+  'illnessDesc' | 'illnessTime' | 'consultFlag' | 'pictures'
+>
 
 // 问诊记录-全部可选
 export type PartialConsult = Partial<Consult>

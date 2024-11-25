@@ -2,7 +2,7 @@
 import { KnowledgeType } from '@/enums'
 import KnowLedgeCard from './KnowLedgeCard.vue'
 import { ref } from 'vue'
-import { KnowledgeList, KnowledgeParams,KnowledgePage } from '@/types/consult'
+import { KnowledgeList, KnowledgeParams,KnowledgePage } from "@/types/consult"
 import { getKnowledgePage } from '@/services/consult'
 const props = defineProps<{
   type: KnowledgeType
